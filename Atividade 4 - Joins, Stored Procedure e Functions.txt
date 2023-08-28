@@ -1,0 +1,37 @@
+Tive que formatar o notebook e estou sem o MySQL instalado ainda
+
+Questão 1:
+-------------------------------------------------------------------------------
+DELIMITER //
+
+CREATE FUNCTION CalcularMediaProva(prova_id INT)
+RETURNS FLOAT
+BEGIN
+  DECLARE media FLOAT;
+  SELECT AVG(nota) INTO media FROM Notas WHERE id_prova = prova_id;
+  RETURN media;
+END //
+
+DELIMITER ;
+-------------------------------------------------------------------------------
+
+Questão 2:
+-------------------------------------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE ObterMediaNotas()
+BEGIN
+  SELECT Alunos.nome, Provas.disciplina, Provas.data, AVG(Notas.nota) AS media
+  FROM Alunos
+  JOIN Notas ON Alunos.id_aluno = Notas.id_aluno
+  JOIN Provas ON Notas.id_prova = Provas.id_prova
+  GROUP BY Alunos.nome, Provas.disciplina, Provas.data;
+END //
+
+DELIMITER ;
+-------------------------------------------------------------------------------
+
+Questão 3:
+-------------------------------------------------------------------------------
+CALL ObterMediaNotas();
+-------------------------------------------------------------------------------
